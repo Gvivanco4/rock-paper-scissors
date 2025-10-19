@@ -9,6 +9,15 @@ function getComputerChoice () {
 
     // Return Rock, paper or scissors
 
+     return validateComputerChoice(roundedNumber);
+}
+
+function getHumanChoice () {
+    const humanChoice = prompt("Rock, paper or Scissors?");
+}
+
+function validateComputerChoice ( roundedNumber ) {
+
     if (roundedNumber >= 7 && roundedNumber <= 10 ) {
         return "Scissors"
     } else if (roundedNumber >= 0 && roundedNumber <= 3) {
@@ -17,7 +26,6 @@ function getComputerChoice () {
     else {
         return "Rock"
     }
-
 }
 
 
