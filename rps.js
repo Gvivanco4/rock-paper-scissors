@@ -3,10 +3,14 @@
 let humanScore = 0;
 let computerScore = 0;
 const GAME_DURATION = 5;
+let roundPlayed = 0;
 
 const buttons = document.querySelectorAll(".options");
 const score = document.querySelector(".score");
 const gameTitle = document.querySelector(".game-title");
+const div = document.createElement("div");
+div.classList.add("result")
+const roundScore = document.querySelector(".round-score")
 
 // Event Listeners Function
 
@@ -26,6 +30,7 @@ function elementEventListener( element, type = "singleElement", event, callbackF
         }
     
     }
+
     
 //Element class name helper function
 
@@ -77,19 +82,54 @@ function playRound ( ele ) {
 
 // Comparison logic
 
-    if (computerElectionIsRock && humanSelection === "scissors") {
-        ++computerScore
-    } else if (computerElectionIsScissors && humanSelection === "paper") {
-        ++computerScore 
-    } else if (computerElectionIsPaper && humanSelection === "rock") {
-        ++computerScore
-    } else if (computerSelection === humanSelection ) {
-        alert("Its a tie");
-        return;
-    } else {
-        ++humanScore
-    }
+    if (roundPlayed >= GAME_DURATION) {
+        determineWinner();
+    } 
 
-    console.log(humanScore, computerScore);
+    if (roundPlayed < GAME_DURATION) {
+
+        if (computerElectionIsRock && humanSelection === "scissors") {
+            ++computerScore
+        } else if (computerElectionIsScissors && humanSelection === "paper") {
+            ++computerScore 
+        } else if (computerElectionIsPaper && humanSelection === "rock") {
+            ++computerScore
+        } else if (computerSelection === humanSelection ) {
+            return;
+        } else {
+            ++humanScore
+        }
+
+        ++roundPlayed
+
+    } 
+
+        roundScore.textContent = `Round: ${roundPlayed}/${GAME_DURATION}`;
+        score.textContent = `Score — Computer: ${computerScore}, Player: ${humanScore}`;
 
 }
+
+function determineWinner () {
+
+    if(humanScore > computerScore) {
+        div.textContent = "Human Wins";
+        score.appendChild(div);
+    } else if (computerScore > humanScore) {
+        div.textContent = "Computer Wins";
+        score.appendChild(div);
+    } else {
+         div.textContent = "It's a tie";
+        score.appendChild(div);
+    }
+
+    humanScore = 0;
+    computerScore = 0;
+    roundPlayed = 0;
+    
+}
+
+elementEventListener(".options", "node", "click", playRound);
+
+
+
+
