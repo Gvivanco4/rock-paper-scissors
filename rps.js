@@ -1,6 +1,47 @@
-// Write a function that returns rock, paper or scissors.
+// Define global variables
 
-function getComputerChoice () {
+let humanScore = 0;
+let computerScore = 0;
+const GAME_DURATION = 5;
+
+const buttons = document.querySelectorAll(".options");
+const score = document.querySelector(".score");
+const gameTitle = document.querySelector(".game-title");
+
+// Event Listeners Function
+
+function elementEventListener( element, type = "singleElement", event, callbackFunction  ) {
+
+    if (type === "node") {
+            const htmlNodeList = document.querySelectorAll(`${element}`);
+            htmlNodeList.forEach((ele) => {
+                ele.addEventListener(event, () => {
+                   callbackFunction(ele)
+                })})
+            } else {
+            const htmlElement = document.querySelector(`${element}`);
+            htmlElement.addEventListener(event, () => {
+                callbackFunction(ele)
+            });
+        }
+    
+    }
+    
+//Element class name helper function
+
+function getHumanElection (election) {
+    if (election.className === "options rock") {
+        return "rock";
+    } else if (election.className === "options paper") {
+        return "paper";
+    } else if (election.className === "options scissors") {
+        return "scissors";
+    }
+}
+
+//Computer Election
+
+function getComputerElection () {
 
     //Return in a randomized way, number 0 or number 1
 
@@ -12,85 +53,43 @@ function getComputerChoice () {
      return validateComputerChoice(roundedNumber);
 }
 
-function getHumanChoice () {
-    const humanChoice = prompt("Rock, paper or Scissors?");
-
-    if (humanChoice === null) {
-        alert("Invalid answer, please try again")
-    }
-
-    return humanChoice;
-}
-
 function validateComputerChoice ( roundedNumber ) {
 
     if (roundedNumber >= 7 && roundedNumber <= 10 ) {
-        return "Scissors"
+        return "scissors"
     } else if (roundedNumber >= 0 && roundedNumber <= 3) {
-        return "Paper"
+        return "paper"
     }
     else {
-        return "Rock"
+        return "rock"
     }
 }
 
-function playRound (getComputerChoice, getHumanChoice) {
+// Play round function
 
-    const computerElection = getComputerChoice().toLowerCase();
-    const humanChoice = getHumanChoice().toLowerCase();
-    const computerElectionIsRock = computerElection === "rock";
-    const computerElectionIsScissors = computerElection === "scissors";
-    const computerElectionIsPaper = computerElection === "paper";
-    console.log(humanChoice);
+function playRound ( ele ) {
 
+    const humanSelection = getHumanElection(ele);
+    const computerSelection = getComputerElection();
+    const computerElectionIsRock = computerSelection === "rock";
+    const computerElectionIsScissors = computerSelection === "scissors";
+    const computerElectionIsPaper = computerSelection === "paper";
 
-    //Validate computer vs human choice elections
+// Comparison logic
 
-    if (computerElectionIsRock && humanChoice === "scissors") {
+    if (computerElectionIsRock && humanSelection === "scissors") {
         ++computerScore
-    } else if (computerElectionIsScissors && humanChoice === "paper") {
+    } else if (computerElectionIsScissors && humanSelection === "paper") {
         ++computerScore 
-    } else if (computerElectionIsPaper && humanChoice === "rock") {
+    } else if (computerElectionIsPaper && humanSelection === "rock") {
         ++computerScore
-    } else if (computerElection === humanChoice ) {
+    } else if (computerSelection === humanSelection ) {
         alert("Its a tie");
         return;
     } else {
         ++humanScore
     }
 
-}
-
-function playGame () {
-    const GAMEDURATION = 5;
-
-
-    for (let i = 1; i <= GAMEDURATION; i++) {
-        playRound(getComputerChoice, getHumanChoice)
-        alert(`Round ${i} is completed`)
-        alert(`Score is Human:${humanScore} vs Computer: ${computerScore}`)
-    }
-
-    determineWinner();
+    console.log(humanScore, computerScore);
 
 }
-
-function determineWinner () {
-
-    if (humanScore > computerScore) {
-        alert("Human Wins!");
-    } else {
-        alert("Computer Wins!")
-    }
-}
-
-
-let humanScore = 0;
-let computerScore = 0;
-
-playGame();
-
-
-
-
-
